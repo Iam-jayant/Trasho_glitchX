@@ -143,12 +143,8 @@ app.get("/trasho/home", async (req, res) => {
     }
 });
 
-app.get("/trasho/chapter1", (req, res) => {
-    res.render("user/chapter1");
-});
-
-app.get("/trasho/chapter2", (req, res) => {
-    res.render("user/chapter2");
+app.get("/trasho/chapters", (req, res) => {
+    res.render("user/chapters");
 });
 
 // Games routes
