@@ -1,0 +1,168 @@
+<%- layout("/layouts/trashoBoilerplate") %>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        background: url('/images/avatar_bg.png') no-repeat center center/cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        position: relative;
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        position: relative;
+        width: 80%;
+        max-width: 900px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: url('<%= user.avatar %>') no-repeat center center/cover;
+        margin: 0 auto 20px;
+        border: 3px solid white;
+    }
+    .content {
+        display: flex;
+        width: 80vw;
+        justify-content: center;
+        gap: 100px;
+    }
+    .box {
+        width: 1000px !important;
+        height: 400px;
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Make video fill the box and keep aspect ratio */
+    .responsive-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Blur effect over the video */
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3); /* Dark transparent overlay */
+        backdrop-filter: blur(2px); /* Stronger blur effect */
+        border-radius: 15px;
+    }
+
+    /* Centered Play Now button */
+    .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255, 204, 0, 0.9);
+        color: black;
+        padding: 14px 28px;
+        font-size: 22px;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 10px;
+        transition: 0.3s ease-in-out;
+        z-index: 2;
+    }
+
+    .play-button:hover {
+        background-color: rgba(255, 170, 0, 0.9);
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .conteudo {
+        width: 450px;
+        display: grid;
+        grid-auto-flow: column;
+        gap: 1.2rem;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+
+    .carrousel {
+        display: flex;
+        gap: 1.2rem;
+    }
+
+    .carrousel::-webkit-scrollbar {
+        display: none;
+    }
+
+    .card {
+        scroll-snap-align: start;
+        border-radius: 10px;
+        width: 150px;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: white;
+        font-weight: bold;
+    }
+
+    .card:nth-child(odd) {
+        background: linear-gradient(-220deg, #ff7eb3, #ff758c);
+    }
+
+    .card:nth-child(even) {
+        background: linear-gradient(-220deg, #6a85b6, #bac8e0);
+    }
+
+    .games-container {
+        display: flex;
+        gap: 20px;
+    }
+</style>
+
+<div class="outer-container">
+    <div class="avatar"></div>
+
+    <div class="container">
+        <div class="content">
+            <div class="box">
+                <a href="/trasho/chapter1" class="play-button">► Play Video</a>
+                <video class="responsive-video" autoplay muted loop>
+                    <source src="/images/chapters_animation.mp4" type="video/mp4">
+                </video>
+                <div class="overlay"></div>
+            </div>
+            
+            <div class="box">
+                <div class="games-container">
+                    <a class="card" href="/trasho/drag&drop">Game 1</a>
+                    <a class="card" href="/trasho/wastesorting">Game 2</a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waste Sorting Game</title>
+    <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Bangers', cursive;0+
+            background: url('/images/avatar_bg.png') no-repeat center/cover;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        h1, h3, p {
+            color: black;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
+        .items, .bins {
+            width: 45%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            min-height: 300px;
+        }
+
+        .item, .bin {
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px 0;
+            cursor: move;
+            background-color: white;
+            text-align: center;
+        }
+
+        .bin {
+            padding-bottom: 20px;
+        }
+
+        .over {
+            border: 2px dashed #000;
+        }
+
+        .correct {
+            color: green;
+            font-weight: bold;
+        }
+
+        .incorrect {
+            color: red;
+            font-weight: bold;
+        }
+
+        #scoreboard {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Waste Sorting Game</h1>
+    <h3>Drag the items to the correct bins!</h3>
+
+    <div class="container">
+        <div class="items" id="items">
+            <div class="item" draggable="true" data-type="compost">Vegetables/Fruits Peels, Leftover Food</div>
+            <div class="item" draggable="true" data-type="hazardous">Used Syringe, Used Cotton</div>
+            <div class="item" draggable="true" data-type="metallic">Aluminum Can, Scrap Metals</div>
+            <div class="item" draggable="true" data-type="recycling">Plastic Bottles</div>
+            <div class="item" draggable="true" data-type="hospital">Syringe, Cotton</div>
+            <div class="item" draggable="true" data-type="recycling">Cardboard, Old Newspapers</div>
+        </div>
+
+        <div class="bins" id="bins">
+            <div class="bin" data-bin="recycling">Recycling Bin (Purple)</div>
+            <div class="bin" data-bin="compost">Compost (Green)</div>
+            <div class="bin" data-bin="metallic">Metallic Waste (Red)</div>
+            <div class="bin" data-bin="hospital">Hospital Waste (Yellow)</div>
+            <div class="bin" data-bin="hazardous">Hazardous Waste (Orange)</div>
+        </div>
+    </div>
+
+    <div id="scoreboard">
+        <p>✅ Correct: <span id="correctCount">0</span></p>
+        <p>❌ Incorrect: <span id="incorrectCount">0</span></p>
+        <p>📊 Final Score: <span id="finalScore">0</span> / 6</p>
+    </div>
+
+    <script>
+        let correctCount = 0;
+        let incorrectCount = 0;
+
+        const items = document.querySelectorAll('.item');
+        const bins = document.querySelectorAll('.bin');
+        const correctDisplay = document.getElementById('correctCount');
+        const incorrectDisplay = document.getElementById('incorrectCount');
+        const finalScoreDisplay = document.getElementById('finalScore');
+
+        items.forEach(item => {
+            item.addEventListener('dragstart', dragStart);
+        });
+
+        bins.forEach(bin => {
+            bin.addEventListener('dragover', dragOver);
+            bin.addEventListener('dragleave', dragLeave);
+            bin.addEventListener('drop', drop);
+        });
+
+        function dragStart(e) {
+            e.dataTransfer.setData('type', e.target.dataset.type);
+            e.dataTransfer.setData('name', e.target.innerHTML);
+            setTimeout(() => e.target.classList.add('hide'), 0);
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+            e.target.classList.add('over');
+        }
+
+        function dragLeave(e) {
+            e.target.classList.remove('over');
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            const itemType = e.dataTransfer.getData('type');
+            const itemName = e.dataTransfer.getData('name');
+            const targetBin = e.target.dataset.bin;
+
+            if (e.target.classList.contains('bin')) {
+                const resultDiv = document.createElement("div");
+                resultDiv.textContent = itemName;
+
+                if (itemType === targetBin) {
+                    resultDiv.classList.add("correct");
+                    resultDiv.innerHTML += " ✅";
+                    correctCount++;
+                } else {
+                    resultDiv.classList.add("incorrect");
+                    resultDiv.innerHTML += " ❌";
+                    incorrectCount++;
+                }
+
+                e.target.appendChild(resultDiv);
+                updateScore();
+            }
+            e.target.classList.remove('over');
+            document.querySelectorAll('.hide').forEach(el => el.remove());
+        }
+
+        function updateScore() {
+            correctDisplay.textContent = correctCount;
+            incorrectDisplay.textContent = incorrectCount;
+            finalScoreDisplay.textContent = correctCount + incorrectCount;
+        }
+    </script>
+</body>
+</html>

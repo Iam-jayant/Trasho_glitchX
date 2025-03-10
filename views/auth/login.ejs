@@ -1,0 +1,87 @@
+<%- layout("/layouts/boilerplate") %>
+
+<style>
+    body {
+        background: url('/images/landing_image.png') no-repeat center center fixed;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .auth-container {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        width: 350px;
+        text-align: center;
+        position: absolute;
+        top: 20%;
+        left: 37%;
+    }
+
+    .auth-container h2 {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 12px;
+        border: none;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+        background: #ff9800;
+        border: none;
+        padding: 12px;
+        border-radius: 10px;
+        transition: 0.3s;
+    }
+
+    .btn-primary:hover {
+        background: #ff7b00;
+    }
+
+    .social-buttons a {
+        display: block;
+        margin: 10px 0;
+        border-radius: 10px;
+    }
+
+    .auth-footer {
+        color: #fff;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+</style>
+
+<div class="auth-container">
+    <h2>Login to TRASHO</h2>
+
+    <form action="/trasho/login" method="POST">
+        <div class="mb-3">
+            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-box-arrow-in-right"></i> Login</button>
+    </form>
+
+    <div class="social-buttons mt-3">
+        <a href="/auth/google" class="btn btn-danger w-100"><i class="bi bi-google"></i> Login with Google</a>
+        <a href="/auth/facebook" class="btn btn-primary w-100"><i class="bi bi-facebook"></i> Login with Facebook</a>
+    </div>
+
+    <div class="auth-footer mt-3">
+        <p>Don't have an account? <a href="/trasho/signup" class="text-warning">Sign up here</a></p>
+    </div>
+</div>

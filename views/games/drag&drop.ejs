@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garbage Sorting Game</title>
+    <style>
+        body {
+            font-family: 'Bangers', cursive;
+            background: url('/images/avatar_bg.png') no-repeat center/cover;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .bin {
+            width: 120px;
+            height: 150px;
+            border: 2px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .glass { background-color: lightblue; }
+        .plastic { background-color: lightyellow; }
+        .organic { background-color: lightgreen; }
+        .item {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            cursor: grab;
+        }
+        #scoreBoard {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Drag and Drop the Garbage into the Correct Bin</h1>
+
+    <div class="container">
+        <img src="/images/ob.jpg" class="bin organic" data-type="organic">
+        <img src="/images/gb.jpg" class="bin glass" data-type="glass">
+        <img src="/images/pb.jpg" class="bin plastic" data-type="plastic">
+    </div>
+
+    <div class="container">
+        <img src="/images/glass.jpg" class="item" data-type="glass" draggable="true">
+        <img src="/images/plastic.jpg" class="item" data-type="plastic" draggable="true">
+        <img src="/images/organic.jpg" class="item" data-type="organic" draggable="true">
+    </div>
+
+    <div id="scoreBoard">Score: <span id="score">0</span></div>
+
+    <!-- Form to send score to the next page -->
+    <form id="scoreForm" action="/trasho/home" method="GET">
+        <input type="hidden" name="score" id="scoreInput">
+        <button type="submit">Next</button>
+    </form>
+
+    <script>
+        let score = 0;
+        const scoreDisplay = document.getElementById("score");
+        const scoreInput = document.getElementById("scoreInput");
+
+        const items = document.querySelectorAll('.item');
+        const bins = document.querySelectorAll('.bin');
+
+        items.forEach(item => {
+            item.addEventListener('dragstart', (event) => {
+                event.dataTransfer.setData('type', item.dataset.type);
+            });
+        });
+
+        bins.forEach(bin => {
+            bin.addEventListener('dragover', (event) => {
+                event.preventDefault();
+            });
+
+            bin.addEventListener('drop', (event) => {
+                event.preventDefault();
+                const draggedType = event.dataTransfer.getData('type');
+                const draggedItem = document.querySelector(`.item[data-type="${draggedType}"]`);
+
+                if (draggedType === bin.dataset.type) {
+                    draggedItem.style.opacity = "0.5"; // Make it look disabled
+                    draggedItem.draggable = false; // Disable dragging
+                    score++;
+                    scoreDisplay.textContent = score; // Update score on UI
+                    scoreInput.value = score; // Store score in hidden input
+                } else {
+                    alert('Wrong Bin! Try Again.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
